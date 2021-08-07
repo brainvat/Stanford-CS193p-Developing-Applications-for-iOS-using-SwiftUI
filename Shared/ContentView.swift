@@ -13,6 +13,9 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
+            Text("Memorize!")
+                .font(.largeTitle)
+                .padding()
             ScrollView {
                 LazyVGrid(columns: [GridItem(), GridItem(), GridItem()]) {
                     ForEach(faces[0..<faceCount], id: \.self) { card in
@@ -29,7 +32,7 @@ struct ContentView: View {
 //                Text ("Reveal")
 //                Spacer()
 //                addButton
-//                
+//
 //            }.font(.title).padding(.horizontal)
         }
     }
