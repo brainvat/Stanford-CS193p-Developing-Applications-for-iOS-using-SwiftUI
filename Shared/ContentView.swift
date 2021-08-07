@@ -8,24 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
-    var faces = ["🛩", "🚗", "⛵️", "🚝", "🛻", "🚠", "🦼", "🛵", "🚛", "🚓", "🛳", "🚛", "🚓", "🚓", "🛳", "🚛"]
-    var facesPerRow = 3
-    @State var faceCount = 6
+    var faces = ["🛩", "🚗", "⛵️", "🚝", "🛻", "🚠", "🦼", "🛵", "🚛", "🚓", "🛳"]
+    @State var faceCount = 5
     
     var body: some View {
         VStack {
             ScrollView {
-                ForEach(0..<(1+(faces.count / facesPerRow)), id: \.self) { row in
-                    HStack {
-                        ForEach(0..<facesPerRow, id: \.self) { col in
-                            let index = row*facesPerRow + col
-                            
-                            if index >= min(faceCount, faces.count) {
-                                CardView(isBlank: true)
-                            } else {
-                                CardView(content: faces[index])
-                            }
-                        }
+                LazyVGrid(columns: [GridItem(), GridItem(), GridItem()]) {
+                    ForEach(faces[0..<faceCount], id: \.self) { card in
+                        CardView(content: card)
+                            .aspectRatio(2/3, contentMode: .fit)
                     }
                 }
                 .padding(.horizontal)
@@ -37,7 +29,7 @@ struct ContentView: View {
                 Text ("Reveal")
                 Spacer()
                 addButton
-
+                
             }.font(.title).padding(.horizontal)
         }
     }
@@ -52,43 +44,33 @@ struct ContentView: View {
     
     var addButton: some View {
         Button {
-            faceCount = min(faces.count, faceCount + 1)
+            faceCount = min(faces.count - 1, faceCount + 1)
         } label: {
             Image(systemName: "plus.square")
         }
     }
 }
 struct CardView: View {
-    var content: String = ""
-    var isBlank: Bool = false
+    var content: String
     @State var isFaceUp: Bool = false
     
     var body: some View {
         ZStack {
             let shape = RoundedRectangle(cornerRadius: 20.0)
             
-            if isBlank {
-                shape.fill().opacity(0.0)
+            if isFaceUp {
+                shape.fill().foregroundColor(.white)
+                shape.strokeBorder(lineWidth: 3)
+                Text(content)
+                    .font(.largeTitle)
+                    .foregroundColor(.black)
+                    .padding()
             } else {
-                if isFaceUp {
-                    shape.fill().foregroundColor(.white)
-                    shape.strokeBorder(lineWidth: 3)
-                    VStack {
-                        Text(content)
-                            .font(.largeTitle)
-                            .foregroundColor(.black)
-                            .padding()
-                        Text("Zoom!")
-                            .font(.subheadline)
-                    }
-                } else {
-                    shape.fill()
-                }
+                shape.fill()
             }
-
+            
         }
         .multilineTextAlignment(.center)
-        .aspectRatio(2/3, contentMode: .fit)
         .onTapGesture {
             isFaceUp.toggle()
         }
