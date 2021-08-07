@@ -8,8 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
-    var faces = ["🛩", "🚗", "⛵️", "🚝", "🛻", "🚠", "🦼", "🛵", "🚛", "🚓", "🛳"]
-    @State var faceCount = 5
+    var cards = [
+        "faces" : ["😁", "🥸", "😖", "🤬", "🤯", "😍", "😷", "🥶", "😶‍🌫️", "😬", "🤢"],
+        "people" : ["👮🏿‍♀️", "👩🏻‍🎓", "👨🏾‍🚀", "🙋🏽‍♀️", "👰🏼‍♀️", "👩🏻‍🚒", "👨🏿‍🔬", "👨🏻‍🌾", "🧑🏽‍🎤", "🤵🏻", "🤦🏽‍♀️"],
+        "flags" : ["🇺🇸", "🇮🇸", "🇬🇧", "🇦🇫", "🇧🇷", "🇬🇾", "🇯🇵", "🇭🇳", "🇸🇪", "🇻🇳", "🇦🇺"],
+        "autos" : ["🛩", "🚗", "⛵️", "🚝", "🛻", "🚠", "🦼", "🛵", "🚛", "🚓", "🛳"]
+    ]
+    
+    @State var cardCount = 5
+    @State var theme = "autos"
     
     var body: some View {
         VStack {
@@ -18,7 +25,8 @@ struct ContentView: View {
                 .padding()
             ScrollView {
                 LazyVGrid(columns: [GridItem(), GridItem(), GridItem()]) {
-                    ForEach(faces[0..<faceCount], id: \.self) { card in
+                    let cardFaces = cards[theme] ?? [""]
+                    ForEach(cardFaces[0..<cardCount], id: \.self) { card in
                         CardView(content: card)
                             .aspectRatio(2/3, contentMode: .fit)
                     }
@@ -26,33 +34,48 @@ struct ContentView: View {
                 .padding(.horizontal)
                 .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
             }
-//            HStack {
-//                removeButton
-//                Spacer()
-//                Text ("Reveal")
-//                Spacer()
-//                addButton
-//
-//            }.font(.title).padding(.horizontal)
-        }
-    }
-    
-    var removeButton: some View {
-        Button {
-            faceCount = max(1, faceCount - 1)
-        } label: {
-            Image(systemName: "minus.square")
-        }
-    }
-    
-    var addButton: some View {
-        Button {
-            faceCount = min(faces.count - 1, faceCount + 1)
-        } label: {
-            Image(systemName: "plus.square")
+            HStack {
+                Spacer()
+                ThemeButton(icon: "car.circle", label: "Autos") {
+                    theme = "autos"
+                }
+                Spacer()
+                ThemeButton(icon: "flag.circle", label: "Flags") {
+                    theme = "flags"
+                }
+                Spacer()
+                ThemeButton(icon: "person.circle", label: "People") {
+                    theme = "people"
+                }
+                Spacer()
+                ThemeButton(icon: "eye.circle", label: "Faces") {
+                    theme = "faces"
+                }
+                Spacer()
+            }.padding(.horizontal)
         }
     }
 }
+
+struct ThemeButton: View {
+    var icon: String
+    var label: String
+    var action: () -> ()
+        
+    var body: some View {
+        Button {
+            action()
+        } label: {
+            VStack {
+                Image(systemName: icon)
+                    .font(.title)
+                Text(label)
+                    .font(.caption)
+            }
+        }
+    }
+}
+
 struct CardView: View {
     var content: String
     @State var isFaceUp: Bool = false
