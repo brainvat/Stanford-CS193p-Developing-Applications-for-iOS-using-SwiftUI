@@ -23,14 +23,14 @@ struct ContentView: View {
                 .padding(.horizontal)
                 .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
             }
-            HStack {
-                removeButton
-                Spacer()
-                Text ("Reveal")
-                Spacer()
-                addButton
-                
-            }.font(.title).padding(.horizontal)
+//            HStack {
+//                removeButton
+//                Spacer()
+//                Text ("Reveal")
+//                Spacer()
+//                addButton
+//                
+//            }.font(.title).padding(.horizontal)
         }
     }
     
