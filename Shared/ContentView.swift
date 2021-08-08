@@ -72,7 +72,8 @@ struct ThemeButton: View {
         } label: {
             VStack {
                 Image(systemName: icon)
-                    .font(.title)
+                    .font(.largeTitle)
+                    .frame(height: 50)
                 Text(label)
                     .font(.caption)
             }
