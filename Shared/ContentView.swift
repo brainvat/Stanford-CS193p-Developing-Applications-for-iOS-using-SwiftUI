@@ -93,7 +93,7 @@ struct CardView: View {
                 shape.fill().foregroundColor(.white)
                 shape.strokeBorder(lineWidth: 3)
                 Text(content)
-                    .font(.largeTitle)
+                    .font(.system(size: 50))
                     .foregroundColor(.black)
                     .padding()
             } else {
