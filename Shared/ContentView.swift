@@ -56,7 +56,7 @@ struct ContentView: View {
                     cardCount = Int.random(in: 8...cards[theme]!.count)
                 }
                 Spacer()
-            }.padding(.horizontal)
+            }.padding([.horizontal, .bottom])
         }
     }
 }
