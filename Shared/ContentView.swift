@@ -24,7 +24,7 @@ struct ContentView: View {
                 .font(.largeTitle)
                 .padding()
             ScrollView {
-                LazyVGrid(columns: [GridItem(), GridItem(), GridItem()]) {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
                     let cardFaces = (cards[theme] ?? [""]).shuffled()
                     ForEach(cardFaces[0..<cardCount], id: \.self) { card in
                         CardView(content: card)
