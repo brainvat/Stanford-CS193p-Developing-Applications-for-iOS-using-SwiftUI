@@ -25,7 +25,7 @@ struct ContentView: View {
                 .padding()
             ScrollView {
                 LazyVGrid(columns: [GridItem(), GridItem(), GridItem()]) {
-                    let cardFaces = cards[theme] ?? [""]
+                    let cardFaces = (cards[theme] ?? [""]).shuffled()
                     ForEach(cardFaces[0..<cardCount], id: \.self) { card in
                         CardView(content: card)
                             .aspectRatio(2/3, contentMode: .fit)
