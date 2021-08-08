@@ -117,8 +117,11 @@ struct ContentView_Previews: PreviewProvider {
                 .preferredColorScheme(.light)
                 .previewDisplayName("Light Mode")
             ContentView()
-                .preferredColorScheme(.dark)
-                .previewDisplayName("Dark Mode")
+                .preferredColorScheme(.light)
+                .previewDisplayName("Light Mode")
+            ContentView()
+                .previewDevice(PreviewDevice(rawValue: "iPad Air"))
+                .previewDisplayName("iPad Air")
         }
     }
 }
