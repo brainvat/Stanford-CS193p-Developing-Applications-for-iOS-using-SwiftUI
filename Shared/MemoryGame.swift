@@ -9,10 +9,11 @@ import Foundation
 
 struct MemoryGame<CardContent> {
     private(set) var cards: [Card] // Array<Card>
-    private let matchesPerSet = 2
     
-    func choose(_ card: Card) {
-        
+    mutating func choose(_ card: Card) {
+        if let chosenIndex = cards.firstIndex(where: { card.id == $0.id }) {
+            cards[chosenIndex].isFaceUp.toggle()
+        }
     }
     
     init(numberOfSetsOfCards: Int, createCardContent: (Int) -> CardContent) {
@@ -20,19 +21,20 @@ struct MemoryGame<CardContent> {
         
         for setIndex in 0..<numberOfSetsOfCards {
             let content = createCardContent(setIndex)
-            for _ in 0..<matchesPerSet {
-                cards.append(Card(content))
-            }
+            cards.append(Card(content, id: setIndex * 2))
+            cards.append(Card(content, id: setIndex * 2 + 1))
         }
     }
     
-    struct Card {
-        var isFaceUp: Bool = false
+    struct Card: Identifiable {
+        var isFaceUp: Bool = true
         var isMatched: Bool = false
         var content: CardContent
+        var id: Int
         
-        init(_ content: CardContent) {
+        init(_ content: CardContent, id: Int) {
             self.content = content
+            self.id = id
         }
     }
 }

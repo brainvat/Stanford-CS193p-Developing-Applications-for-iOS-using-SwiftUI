@@ -8,15 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    var cards = [
-        "faces" : ["😁", "🥸", "😖", "🤬", "🤯", "😍", "😷", "🥶", "😶‍🌫️", "😬", "🤢"],
-        "people" : ["👮🏿‍♀️", "👩🏻‍🎓", "👨🏾‍🚀", "🙋🏽‍♀️", "👰🏼‍♀️", "👩🏻‍🚒", "👨🏿‍🔬", "👨🏻‍🌾", "🧑🏽‍🎤", "🤵🏻", "🤦🏽‍♀️"],
-        "flags" : ["🇺🇸", "🇮🇸", "🇬🇧", "🇦🇫", "🇧🇷", "🇬🇾", "🇯🇵", "🇭🇳", "🇸🇪", "🇻🇳", "🇦🇺"],
-        "autos" : ["🛩", "🚗", "⛵️", "🚝", "🛻", "🚠", "🦼", "🛵", "🚛", "🚓", "🛳"]
-    ]
+    @ObservedObject var game: EmojiMemoryGame
     
     @State var cardCount = 8
-    @State var theme = "autos"
     
     var body: some View {
         VStack {
@@ -25,39 +19,32 @@ struct ContentView: View {
                 .padding()
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
-                    let cardFaces = (cards[theme] ?? [""]).shuffled()
-                    ForEach(cardFaces[0..<cardCount], id: \.self) { card in
-                        CardView(content: card)
+                    ForEach(game.cards) { card in
+                        CardView(card)
                             .aspectRatio(2/3, contentMode: .fit)
+                            .onTapGesture {
+                                game.choose(card)
+                            }
                     }
                 }
                 .padding(.horizontal)
                 .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
             }
             HStack {
-                Spacer()
-                ThemeButton(icon: "car.circle", label: "Autos") {
-                    theme = "autos"
-                    cardCount = Int.random(in: 8...cards[theme]!.count)
-                }
-                Spacer()
-                ThemeButton(icon: "flag.circle", label: "Flags") {
-                    theme = "flags"
-                    cardCount = Int.random(in: 8...cards[theme]!.count)
-                }
-                Spacer()
-                ThemeButton(icon: "person.circle", label: "People") {
-                    theme = "people"
-                    cardCount = Int.random(in: 8...cards[theme]!.count)
-                }
-                Spacer()
-                ThemeButton(icon: "eye.circle", label: "Faces") {
-                    theme = "faces"
-                    cardCount = Int.random(in: 8...cards[theme]!.count)
+                ForEach(EmojiMemoryGame.themes.indices) {index in
+                    Spacer()
+                    ThemeButton(icon: EmojiMemoryGame.themes[index][2],
+                                label: EmojiMemoryGame.themes[index][1]) {
+                        game.reset(index)
+                    }
                 }
                 Spacer()
             }.padding([.horizontal, .bottom])
         }
+    }
+    
+    init(_ game: EmojiMemoryGame) {
+        self.game = game
     }
 }
 
@@ -82,17 +69,16 @@ struct ThemeButton: View {
 }
 
 struct CardView: View {
-    var content: String
-    @State var isFaceUp: Bool = false
+    var card: MemoryGame<String>.Card
     
     var body: some View {
         ZStack {
             let shape = RoundedRectangle(cornerRadius: 20.0)
             
-            if isFaceUp {
+            if card.isFaceUp {
                 shape.fill().foregroundColor(.white)
                 shape.strokeBorder(lineWidth: 3)
-                Text(content)
+                Text(card.content)
                     .font(.system(size: 50))
                     .foregroundColor(.black)
                     .padding()
@@ -102,9 +88,11 @@ struct CardView: View {
             
         }
         .multilineTextAlignment(.center)
-        .onTapGesture {
-            isFaceUp.toggle()
-        }
+
+    }
+    
+    init(_ card: MemoryGame<String>.Card) {
+        self.card = card
     }
 }
 
@@ -112,16 +100,14 @@ struct CardView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
+        let game = EmojiMemoryGame()
         Group {
-            ContentView()
+            ContentView(game)
                 .preferredColorScheme(.light)
                 .previewDisplayName("Light Mode")
-            ContentView()
-                .preferredColorScheme(.light)
-                .previewDisplayName("Light Mode")
-//            ContentView()
-//                .previewDevice(PreviewDevice(rawValue: "iPad Air"))
-//                .previewDisplayName("iPad Air")
+            ContentView(game)
+                .preferredColorScheme(.dark)
+                .previewDisplayName("Dark Mode")
         }
     }
 }
