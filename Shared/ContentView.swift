@@ -18,7 +18,7 @@ struct ContentView: View {
                 .font(.largeTitle)
                 .padding()
             ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 75))]) {
                     ForEach(game.cards) { card in
                         CardView(card)
                             .aspectRatio(2/3, contentMode: .fit)
@@ -82,6 +82,8 @@ struct CardView: View {
                     .font(.system(size: 50))
                     .foregroundColor(.black)
                     .padding()
+            } else if card.isMatched {
+                shape.opacity(0.0)
             } else {
                 shape.fill()
             }
