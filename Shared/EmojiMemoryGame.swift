@@ -11,6 +11,7 @@ class EmojiMemoryGame: ObservableObject {
     private static let maxSets = 6
     private static var _theme = 0
     
+    // TODO: this two-array system is ugly
     static let themes = [["faces", "Faces", "eye.circle"],
                          ["people", "People", "person.circle"],
                          ["flags", "Flags", "flag.circle"],
