@@ -8,7 +8,7 @@
 import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {
-    private static let maxSets = 4
+    private static let maxSets = 6
     private static var _theme = 0
     
     static let themes = [["faces", "Faces", "eye.circle"],
@@ -23,7 +23,8 @@ class EmojiMemoryGame: ObservableObject {
     ]
     
     static func createMemoryGame(matchedSets: Int = 8) -> MemoryGame<String> {
-        return MemoryGame<String>(numberOfSetsOfCards: matchedSets.clamped(to: 1...maxSets)) { pairIndex in
+        let numberOfSets = matchedSets >= 1 && matchedSets <= maxSets ? matchedSets : maxSets
+        return MemoryGame<String>(numberOfSetsOfCards: numberOfSets) { pairIndex in
             cards[faceSetKey]?[pairIndex] ?? "💣"
         }
     }
@@ -34,13 +35,15 @@ class EmojiMemoryGame: ObservableObject {
         }
         
         set(newTheme) {
-            _theme = newTheme.clamped(to: 0...(faceSets.count-1))
+            let themeIndex = newTheme >= 0 && newTheme < faceSets.count ? newTheme : faceSets.count-1
+            _theme = themeIndex
         }
     }
     
     static var faceSetKey: String {
         get {
-            faceSets[theme.clamped(to: 0...(faceSets.count-1))]
+            let themeIndex = theme >= 0 && theme < faceSets.count ? theme : faceSets.count-1
+            return faceSets[themeIndex]
         }
     }
     
@@ -66,12 +69,5 @@ class EmojiMemoryGame: ObservableObject {
     func reset(_ theme: Int = 0) {
         EmojiMemoryGame.theme = theme
         model = EmojiMemoryGame.createMemoryGame()
-    }
-}
-
-// https://stackoverflow.com/questions/36110620/standard-way-to-clamp-a-number-between-two-values-in-swift
-extension Comparable {
-    func clamped(to limits: ClosedRange<Self>) -> Self {
-        return min(max(self, limits.lowerBound), limits.upperBound)
     }
 }
