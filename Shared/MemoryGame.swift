@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct MemoryGame<CardContent> where CardContent: Equatable {
     private(set) var cards: [Card] // Array<Card>
@@ -30,13 +31,13 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
-    init(numberOfSetsOfCards: Int, createCardContent: (Int) -> CardContent) {
+    init(numberOfSetsOfCards: Int, cardColor: Color = Color.blue, createCardContent: (Int) -> CardContent) {
         cards = Array<Card>()
         
         for setIndex in 0..<numberOfSetsOfCards {
             let content = createCardContent(setIndex)
-            cards.append(Card(content, id: setIndex * 2))
-            cards.append(Card(content, id: setIndex * 2 + 1))
+            cards.append(Card(content, color: cardColor, id: setIndex * 2))
+            cards.append(Card(content, color: cardColor, id: setIndex * 2 + 1))
         }
     }
     
@@ -44,10 +45,12 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         var isFaceUp: Bool = false
         var isMatched: Bool = false
         var content: CardContent
+        var color: Color
         var id: Int
         
-        init(_ content: CardContent, id: Int) {
+        init(_ content: CardContent, color: Color, id: Int) {
             self.content = content
+            self.color = color
             self.id = id
         }
     }

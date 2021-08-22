@@ -13,10 +13,12 @@
         @State var cardCount = 8
         
         var body: some View {
+            VStack {
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 75))]) {
                         ForEach(game.cards) { card in
                             CardView(card)
+                                .foregroundColor(card.color)
                                 .aspectRatio(2/3, contentMode: .fit)
                                 .onTapGesture {
                                     game.choose(card)
@@ -24,32 +26,15 @@
                         }
                     }
                     .padding(.horizontal)
-                    .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
                 }
+                Button("Reset") {
+                    game.reset()
+                }
+            }
         }
         
         init(_ game: EmojiMemoryGame) {
             self.game = game
-        }
-    }
-
-    struct ThemeButton: View {
-        var icon: String
-        var label: String
-        var action: () -> ()
-            
-        var body: some View {
-            Button {
-                action()
-            } label: {
-                VStack {
-                    Image(systemName: icon)
-                        .font(.largeTitle)
-                        .frame(height: 50)
-                    Text(label)
-                        .font(.caption)
-                }
-            }
         }
     }
 
