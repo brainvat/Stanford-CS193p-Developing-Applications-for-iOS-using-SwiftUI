@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct MemoryGame<CardContent> where CardContent: Equatable {
-    private(set) var cards: [Card] // Array<Card>
+    private(set) var cards = Array<Card>() // Array<Card>
     private var indexOfFaceUpCard: Int?
     
     mutating func choose(_ card: Card) {
@@ -32,13 +32,12 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     }
     
     init(numberOfSetsOfCards: Int, cardColor: Color = Color.blue, createCardContent: (Int) -> CardContent) {
-        cards = Array<Card>()
-        
         for setIndex in 0..<numberOfSetsOfCards {
             let content = createCardContent(setIndex)
             cards.append(Card(content, color: cardColor, id: setIndex * 2))
             cards.append(Card(content, color: cardColor, id: setIndex * 2 + 1))
         }
+        cards.shuffle()
     }
     
     struct Card: Identifiable {

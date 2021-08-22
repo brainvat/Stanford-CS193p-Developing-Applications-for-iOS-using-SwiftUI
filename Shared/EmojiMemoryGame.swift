@@ -38,9 +38,9 @@ class EmojiMemoryGame: ObservableObject {
         let newTheme = EmojiMemoryGame.themes.contains(theme) ? theme : randomTheme
         let numberOfSets = cardThemes[newTheme]!.pairs
         let color = cardThemes[newTheme]!.color
+        let emojis = cardThemes[newTheme]!.emojis.shuffled()
         return MemoryGame<String>(numberOfSetsOfCards: numberOfSets, cardColor: color) { pairIndex in
-            let emojis = cardThemes[newTheme]!.emojis.shuffled()
-            return emojis[pairIndex]
+            emojis[pairIndex]
         }
     }
     
