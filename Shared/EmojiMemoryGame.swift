@@ -39,7 +39,7 @@ class EmojiMemoryGame: ObservableObject {
         let numberOfSets = cardThemes[newTheme]!.pairs
         let color = cardThemes[newTheme]!.color
         return MemoryGame<String>(numberOfSetsOfCards: numberOfSets, cardColor: color) { pairIndex in
-            let emojis = cardThemes[newTheme]!.emojis // .shuffled()
+            let emojis = cardThemes[newTheme]!.emojis.shuffled()
             return emojis[pairIndex]
         }
     }
