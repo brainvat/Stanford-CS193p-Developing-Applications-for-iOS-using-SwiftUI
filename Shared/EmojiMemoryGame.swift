@@ -30,7 +30,16 @@ class EmojiMemoryGame: ObservableObject {
                       emojis: ["🇺🇸", "🇮🇸", "🇬🇧", "🇦🇫", "🇧🇷", "🇬🇾", "🇯🇵", "🇭🇳", "🇸🇪", "🇻🇳", "🇦🇺"]),
         "autos":
             cardTheme(label: "Autos", icon: "car.circle", pairs: 7, color: Color.orange,
-                      emojis: ["🛩", "🚗", "⛵️", "🚝", "🛻", "🚠", "🦼", "🛵", "🚛", "🚓", "🛳"])
+                      emojis: ["🛩", "🚗", "⛵️", "🚝", "🛻", "🚠", "🦼", "🛵", "🚛", "🚓", "🛳"]),
+        "animals":
+            cardTheme(label: "Animals", icon: "pawprint.circle", pairs: 6, color: Color.purple,
+                      emojis: ["🐶", "🐨", "🦇", "🦉", "🐒", "🦅", "🐙", "🐢", "🦁", "🐌", "🐲"]),
+        "food":
+            cardTheme(label: "Food", icon: "leaf.circle", pairs: 7, color: Color.yellow,
+                      emojis: ["🥥", "🍕", "🍟", "🧇", "🥖", "🍔", "🥑", "🥞", "🥮", "🍣", "☕️"]),
+        "sports":
+            cardTheme(label: "Sports", icon: "bicycle.circle", pairs: 7, color: Color.pink,
+                      emojis: ["⚽️", "🏀", "🏈", "⚾️", "🎱", "🏑", "🥅", "🏓", "🛼", "🏹", "⛳️"]),
     ]
     
     static func createMemoryGame(with theme: String = "") -> MemoryGame<String> {
