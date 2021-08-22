@@ -45,13 +45,13 @@ class EmojiMemoryGame: ObservableObject {
                       emojis: ["⌚️", "💻", "☎️", "⌛️", "💾", "⚖️", "🌡", "📺", "🎥", "🕹", "📱"])
     ]
     
-    static func createMemoryGame(with theme: String = "") -> MemoryGame<String> {
+    static func createMemoryGame(with theme: String = "", revealFirstCard: Bool = false) -> MemoryGame<String> {
         // make force unwrapping safe first
         let newTheme = EmojiMemoryGame.themes.contains(theme) ? theme : randomTheme
         let numberOfSets = min(cardThemes[newTheme]!.pairs, cardThemes[newTheme]!.emojis.count) // clamp on count
         let color = cardThemes[newTheme]!.color
         let emojis = cardThemes[newTheme]!.emojis.shuffled()
-        return MemoryGame<String>(numberOfSetsOfCards: numberOfSets, cardColor: color) { pairIndex in
+        return MemoryGame<String>(flipOne: revealFirstCard, numberOfSetsOfCards: numberOfSets, cardColor: color) { pairIndex in
             emojis[pairIndex]
         }
     }
@@ -83,5 +83,6 @@ class EmojiMemoryGame: ObservableObject {
     
     func reset() {
         model = EmojiMemoryGame.createMemoryGame()
+//        model = EmojiMemoryGame.createMemoryGame(revealFirstCard: true) // buggy
     }
 }

@@ -13,6 +13,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     private var indexOfFaceUpCard: Int?
     
     mutating func choose(_ card: Card) {
+//        print(cards)
         if let chosenIndex = cards.firstIndex(where: { card.id == $0.id }),
            !cards[chosenIndex].isFaceUp, !cards[chosenIndex].isMatched {
             if let potentialMatchIndex = indexOfFaceUpCard {
@@ -31,23 +32,26 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
-    init(numberOfSetsOfCards: Int, cardColor: Color = Color.blue, createCardContent: (Int) -> CardContent) {
+    init(flipOne: Bool = false, numberOfSetsOfCards: Int, cardColor: Color = Color.blue, createCardContent: (Int) -> CardContent) {
+        if flipOne { indexOfFaceUpCard = Int.random(in: 0..<numberOfSetsOfCards) }
         for setIndex in 0..<numberOfSetsOfCards {
             let content = createCardContent(setIndex)
-            cards.append(Card(content, color: cardColor, id: setIndex * 2))
-            cards.append(Card(content, color: cardColor, id: setIndex * 2 + 1))
+            let faceUp = (setIndex == indexOfFaceUpCard) && flipOne
+            cards.append(Card(content, color: cardColor, id: setIndex * 2, isFaceUp: false))
+            cards.append(Card(content, color: cardColor, id: setIndex * 2 + 1, isFaceUp: faceUp))
         }
         cards.shuffle()
     }
     
     struct Card: Identifiable {
-        var isFaceUp: Bool = false
+        var isFaceUp: Bool
         var isMatched: Bool = false
         var content: CardContent
         var color: Color
         var id: Int
         
-        init(_ content: CardContent, color: Color, id: Int) {
+        init(_ content: CardContent, color: Color, id: Int, isFaceUp: Bool = false) {
+            self.isFaceUp = isFaceUp
             self.content = content
             self.color = color
             self.id = id
