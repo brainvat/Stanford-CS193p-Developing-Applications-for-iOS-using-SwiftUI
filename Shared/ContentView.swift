@@ -9,6 +9,7 @@
 
     struct ContentView: View {
         @ObservedObject var game: EmojiMemoryGame
+        @GestureState var isUpdating = false
         
         @State var cardCount = 8
         
