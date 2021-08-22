@@ -20,7 +20,7 @@ class EmojiMemoryGame: ObservableObject {
         
     static let cardThemes = [
         "faces":
-            cardTheme(label: "Faces", icon: "eye.circle", pairs: 6, color: Color.red,
+            cardTheme(label: "Faces", icon: "eye.circle", pairs: 15, color: Color.red, // too many pairs
                       emojis: ["😁", "🥸", "😖", "🤬", "🤯", "😍", "😷", "🥶", "😶‍🌫️", "😬", "🤢"]),
         "people":
             cardTheme(label: "People", icon: "person.circle", pairs: 4, color: Color.blue,
@@ -36,7 +36,7 @@ class EmojiMemoryGame: ObservableObject {
     static func createMemoryGame(with theme: String = "") -> MemoryGame<String> {
         // make force unwrapping safe first
         let newTheme = EmojiMemoryGame.themes.contains(theme) ? theme : randomTheme
-        let numberOfSets = cardThemes[newTheme]!.pairs
+        let numberOfSets = max(cardThemes[newTheme]!.pairs, cardThemes[newTheme]!.emojis.count) // clamp on count
         let color = cardThemes[newTheme]!.color
         let emojis = cardThemes[newTheme]!.emojis.shuffled()
         return MemoryGame<String>(numberOfSetsOfCards: numberOfSets, cardColor: color) { pairIndex in
