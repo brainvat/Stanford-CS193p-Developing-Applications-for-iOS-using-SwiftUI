@@ -27,7 +27,7 @@
                     }
                     .padding(.horizontal)
                 }
-                Button("Reset") {
+                Button("New Game") {
                     game.reset()
                 }
             }

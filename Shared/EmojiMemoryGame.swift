@@ -35,20 +35,20 @@ class EmojiMemoryGame: ObservableObject {
             cardTheme(label: "Animals", icon: "pawprint.circle", pairs: 6, color: Color.purple,
                       emojis: ["🐶", "🐨", "🦇", "🦉", "🐒", "🦅", "🐙", "🐢", "🦁", "🐌", "🐲"]),
         "food":
-            cardTheme(label: "Food", icon: "leaf.circle", pairs: 7, color: Color.yellow,
+            cardTheme(label: "Food", icon: "leaf.circle", pairs: 3, color: Color.yellow,
                       emojis: ["🥥", "🍕", "🍟", "🧇", "🥖", "🍔", "🥑", "🥞", "🥮", "🍣", "☕️"]),
         "sports":
             cardTheme(label: "Sports", icon: "bicycle.circle", pairs: 7, color: Color.pink,
                       emojis: ["⚽️", "🏀", "🏈", "⚾️", "🎱", "🏑", "🥅", "🏓", "🛼", "🏹", "⛳️"]),
         "gadgets":
-            cardTheme(label: "Gadgets", icon: "gear.circle", pairs: 7, color: Color(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)),
-                      emojis: ["⌚️", "💻", "☎️", "⌛️", "💾", "⚖️", "🌡", "📺", "🎥", "🕹", "📱"]),
+            cardTheme(label: "Gadgets", icon: "gear.circle", pairs: 4, color: Color(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)),
+                      emojis: ["⌚️", "💻", "☎️", "⌛️", "💾", "⚖️", "🌡", "📺", "🎥", "🕹", "📱"])
     ]
     
     static func createMemoryGame(with theme: String = "") -> MemoryGame<String> {
         // make force unwrapping safe first
         let newTheme = EmojiMemoryGame.themes.contains(theme) ? theme : randomTheme
-        let numberOfSets = max(cardThemes[newTheme]!.pairs, cardThemes[newTheme]!.emojis.count) // clamp on count
+        let numberOfSets = min(cardThemes[newTheme]!.pairs, cardThemes[newTheme]!.emojis.count) // clamp on count
         let color = cardThemes[newTheme]!.color
         let emojis = cardThemes[newTheme]!.emojis.shuffled()
         return MemoryGame<String>(numberOfSetsOfCards: numberOfSets, cardColor: color) { pairIndex in
