@@ -40,7 +40,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
             cards.append(Card(content, color: cardColor, id: setIndex * 2, isFaceUp: false))
             cards.append(Card(content, color: cardColor, id: setIndex * 2 + 1, isFaceUp: faceUp))
         }
-        cards.shuffle()
+        cards.shuffle() // ensures Task 13 requirement met
     }
     
     struct Card: Identifiable {
