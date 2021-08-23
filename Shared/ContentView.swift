@@ -17,6 +17,7 @@
                     Image(systemName: game.icon)
                     Text(game.name)
                 }
+                .foregroundColor(.primary)
                 .font(.title)
                 .padding()
                 
@@ -39,7 +40,9 @@
                     }
                     Spacer()
                     Text("Score: \(game.score)")
-                }.padding()
+                }
+                .foregroundColor(.primary)
+                .padding()
             }.statusBar(hidden: true)
         }
         
