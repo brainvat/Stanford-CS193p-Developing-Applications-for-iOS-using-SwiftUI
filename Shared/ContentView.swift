@@ -35,8 +35,11 @@
                     .padding(.horizontal)
                 }
                 HStack {
-                    Button("New Game") {
-                        game.reset()
+                    Button(action: { game.reset() }) {
+                        HStack {
+                            Image(systemName: "restart.circle")
+                            Text("New Game")
+                        }
                     }
                     Spacer()
                     Text("Score: \(game.score)")

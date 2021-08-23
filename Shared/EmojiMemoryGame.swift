@@ -37,16 +37,16 @@ class EmojiMemoryGame: ObservableObject {
             cardTheme(label: "Autos", icon: "car.circle", pairs: 7, color: Color.orange,
                       emojis: ["🛩", "🚗", "⛵️", "🚝", "🛻", "🚠", "🦼", "🛵", "🚛", "🚓", "🛳"]),
         "animals":
-            cardTheme(label: "Animals", icon: "pawprint.circle", pairs: 6, color: Color.purple, // ios 15+
+            cardTheme(label: "Animals", icon: "ant.circle", pairs: 6, color: Color.purple,
                       emojis: ["🐶", "🐨", "🦇", "🦉", "🐒", "🦅", "🐙", "🐢", "🦁", "🐌", "🐲"]),
         "food":
-            cardTheme(label: "Food", icon: "leaf.circle", pairs: 3, color: Color.yellow, // ios 15+
+            cardTheme(label: "Food", icon: "bag.circle", pairs: 3, color: Color.yellow, 
                       emojis: ["🥥", "🍕", "🍟", "🧇", "🥖", "🍔", "🥑", "🥞", "🥮", "🍣", "☕️"]),
         "sports":
             cardTheme(label: "Sports", icon: "bicycle.circle", pairs: 7, color: Color.pink,
                       emojis: ["⚽️", "🏀", "🏈", "⚾️", "🎱", "🏑", "🥅", "🏓", "🛼", "🏹", "⛳️"]),
         "gadgets":
-            cardTheme(label: "Gadgets", icon: "power.circle", pairs: 4, color: Color(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)), // ios 15+
+            cardTheme(label: "Gadgets", icon: "tv.circle", pairs: 4, color: Color(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)),
                       emojis: ["⌚️", "💻", "☎️", "⌛️", "💾", "⚖️", "🌡", "📺", "🎥", "🕹", "📱"])
     ]
     

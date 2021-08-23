@@ -38,7 +38,6 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                 indexOfFaceUpCard = chosenIndex
             }
             cards[chosenIndex].isFaceUp.toggle()
-//            print(cards.map {[$0.content, $0.previouslySeen] })
         }
     }
     
