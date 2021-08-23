@@ -19,6 +19,8 @@ class EmojiMemoryGame: ObservableObject {
     private static let maxSets = 6
     
     @Published private var model: MemoryGame<String>
+    @Published private var _score: Int = 0
+    
     var theme: String
     
     static let cardThemes = [
@@ -84,6 +86,12 @@ class EmojiMemoryGame: ObservableObject {
         EmojiMemoryGame.cardThemes[theme]!.icon
     }
     
+    var score: Int {
+        get {
+            _score
+        }
+    }
+    
     var cards: Array<MemoryGame<String>.Card> {
         model.cards
     }
@@ -92,6 +100,7 @@ class EmojiMemoryGame: ObservableObject {
     
     func choose(_ card: MemoryGame<String>.Card) {
         model.choose(card)
+        _score = model.score
     }
     
     func reset() {

@@ -16,7 +16,9 @@
                 HStack {
                     Image(systemName: game.icon)
                     Text(game.name)
-                }.padding(.horizontal)
+                }
+                .font(.title)
+                .padding()
                 
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 75))]) {
@@ -31,9 +33,13 @@
                     }
                     .padding(.horizontal)
                 }
-                Button("New Game") {
-                    game.reset()
-                }
+                HStack {
+                    Button("New Game") {
+                        game.reset()
+                    }
+                    Spacer()
+                    Text("Score: \(game.score)")
+                }.padding()
             }.statusBar(hidden: true)
         }
         
