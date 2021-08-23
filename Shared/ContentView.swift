@@ -11,10 +11,13 @@
         @ObservedObject var game: EmojiMemoryGame
         @GestureState var isUpdating = false
         
-        @State var cardCount = 8
-        
         var body: some View {
             VStack {
+                HStack {
+                    Image(systemName: game.icon)
+                    Text(game.name)
+                }.padding(.horizontal)
+                
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 75))]) {
                         ForEach(game.cards) { card in
@@ -31,7 +34,7 @@
                 Button("New Game") {
                     game.reset()
                 }
-            }
+            }.statusBar(hidden: true)
         }
         
         init(_ game: EmojiMemoryGame) {

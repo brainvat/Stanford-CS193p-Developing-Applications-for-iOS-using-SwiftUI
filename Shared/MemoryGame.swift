@@ -11,9 +11,10 @@ import SwiftUI
 struct MemoryGame<CardContent> where CardContent: Equatable {
     private(set) var cards = Array<Card>() // Array<Card>
     private var indexOfFaceUpCard: Int?
+    var name: String
+    var icon: String
     
     mutating func choose(_ card: Card) {
-//        print(cards)
         if let chosenIndex = cards.firstIndex(where: { card.id == $0.id }),
            !cards[chosenIndex].isFaceUp, !cards[chosenIndex].isMatched {
             if let potentialMatchIndex = indexOfFaceUpCard {
@@ -32,7 +33,9 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
-    init(flipOne: Bool = false, numberOfSetsOfCards: Int, cardColor: Color = Color.blue, createCardContent: (Int) -> CardContent) {
+    init(name: String = "", icon: String = "", flipOne: Bool = false, numberOfSetsOfCards: Int, cardColor: Color = Color.blue, createCardContent: (Int) -> CardContent) {
+        self.name = name
+        self.icon = icon
         if flipOne { indexOfFaceUpCard = Int.random(in: 0..<numberOfSetsOfCards) }
         for setIndex in 0..<numberOfSetsOfCards {
             let content = createCardContent(setIndex)
@@ -42,7 +45,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
         cards.shuffle() // ensures Task 13 requirement met
     }
-    
+
     struct Card: Identifiable {
         var isFaceUp: Bool
         var isMatched: Bool = false

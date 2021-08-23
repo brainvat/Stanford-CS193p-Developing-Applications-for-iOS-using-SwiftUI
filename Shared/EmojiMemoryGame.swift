@@ -17,7 +17,10 @@ struct cardTheme {
 
 class EmojiMemoryGame: ObservableObject {
     private static let maxSets = 6
-        
+    
+    @Published private var model: MemoryGame<String>
+    var theme: String
+    
     static let cardThemes = [
         "faces":
             cardTheme(label: "Faces", icon: "eye.circle", pairs: 15, color: Color.red, // too many pairs
@@ -32,18 +35,23 @@ class EmojiMemoryGame: ObservableObject {
             cardTheme(label: "Autos", icon: "car.circle", pairs: 7, color: Color.orange,
                       emojis: ["🛩", "🚗", "⛵️", "🚝", "🛻", "🚠", "🦼", "🛵", "🚛", "🚓", "🛳"]),
         "animals":
-            cardTheme(label: "Animals", icon: "pawprint.circle", pairs: 6, color: Color.purple,
+            cardTheme(label: "Animals", icon: "pawprint.circle", pairs: 6, color: Color.purple, // ios 15+
                       emojis: ["🐶", "🐨", "🦇", "🦉", "🐒", "🦅", "🐙", "🐢", "🦁", "🐌", "🐲"]),
         "food":
-            cardTheme(label: "Food", icon: "leaf.circle", pairs: 3, color: Color.yellow,
+            cardTheme(label: "Food", icon: "leaf.circle", pairs: 3, color: Color.yellow, // ios 15+
                       emojis: ["🥥", "🍕", "🍟", "🧇", "🥖", "🍔", "🥑", "🥞", "🥮", "🍣", "☕️"]),
         "sports":
             cardTheme(label: "Sports", icon: "bicycle.circle", pairs: 7, color: Color.pink,
                       emojis: ["⚽️", "🏀", "🏈", "⚾️", "🎱", "🏑", "🥅", "🏓", "🛼", "🏹", "⛳️"]),
         "gadgets":
-            cardTheme(label: "Gadgets", icon: "gear.circle", pairs: 4, color: Color(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)),
+            cardTheme(label: "Gadgets", icon: "power.circle", pairs: 4, color: Color(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)), // ios 15+
                       emojis: ["⌚️", "💻", "☎️", "⌛️", "💾", "⚖️", "🌡", "📺", "🎥", "🕹", "📱"])
     ]
+    
+    init() {
+        theme = EmojiMemoryGame.randomTheme
+        model = EmojiMemoryGame.createMemoryGame(with: theme)
+    }
     
     static func createMemoryGame(with theme: String = "", revealFirstCard: Bool = false) -> MemoryGame<String> {
         // make force unwrapping safe first
@@ -68,8 +76,13 @@ class EmojiMemoryGame: ObservableObject {
         }
     }
     
-    @Published private var model: MemoryGame<String> = createMemoryGame()
-
+    var name: String {
+        EmojiMemoryGame.cardThemes[theme]!.label
+    }
+    
+    var icon: String {
+        EmojiMemoryGame.cardThemes[theme]!.icon
+    }
     
     var cards: Array<MemoryGame<String>.Card> {
         model.cards
@@ -82,7 +95,8 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     func reset() {
-        model = EmojiMemoryGame.createMemoryGame()
+        theme = EmojiMemoryGame.randomTheme
+        model = EmojiMemoryGame.createMemoryGame(with: theme)
 //        model = EmojiMemoryGame.createMemoryGame(revealFirstCard: true) // buggy
     }
 }
