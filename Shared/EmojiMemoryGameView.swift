@@ -22,7 +22,7 @@
                 .padding()
                 
                 ScrollView {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 75))]) {
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: GridDrawingConstants.gridItemSize))]) {
                         ForEach(game.cards) { card in
                             CardView(card)
                                 .foregroundColor(card.color)
@@ -52,35 +52,50 @@
         init(_ game: EmojiMemoryGame) {
             self.game = game
         }
+        
+        private struct GridDrawingConstants {
+            static let gridItemSize: CGFloat = 60
+        }
     }
 
     struct CardView: View {
         private var card: EmojiMemoryGame.Card
         
         var body: some View {
-            ZStack {
-                let shape = RoundedRectangle(cornerRadius: 20.0)
-                
-                if card.isFaceUp {
-                    shape.fill().foregroundColor(.white)
-                    shape.strokeBorder(lineWidth: 3)
-                    Text(card.content)
-                        .font(.system(size: 50))
-                        .foregroundColor(.black)
-                        .padding()
-                } else if card.isMatched {
-                    shape.opacity(0.0)
-                } else {
-                    shape.fill()
+            GeometryReader(content: { geometry in
+                ZStack {
+                    let shape = RoundedRectangle(cornerRadius: CardDrawingConstants.cornerRadius)
+                    
+                    if card.isFaceUp {
+                        shape.fill().foregroundColor(.white)
+                        shape.strokeBorder(lineWidth: CardDrawingConstants.lineWidth)
+                        Text(card.content)
+                            .font(font(in: geometry.size))
+                            .foregroundColor(.black)
+                            .padding()
+                    } else if card.isMatched {
+                        shape.opacity(0.0)
+                    } else {
+                        shape.fill()
+                    }
+                    
                 }
-                
-            }
-            .multilineTextAlignment(.center)
-
+                .multilineTextAlignment(.center)
+            })
         }
         
         init(_ card: EmojiMemoryGame.Card) {
             self.card = card
+        }
+        
+        private struct CardDrawingConstants {
+            static let cornerRadius: CGFloat = 15
+            static let lineWidth: CGFloat = 3
+            static let fontScale: CGFloat = 0.5
+        }
+        
+        private func font(in size: CGSize) -> Font {
+            Font.system(size: CardDrawingConstants.fontScale * min(size.width, size.height))
         }
     }
 
