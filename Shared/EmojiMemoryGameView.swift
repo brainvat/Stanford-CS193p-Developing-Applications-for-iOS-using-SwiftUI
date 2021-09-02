@@ -1,5 +1,5 @@
     //
-    //  ContentView.swift
+    //  EmojiMemoryGameView.swift
     //  Shared
     //
     //  Created by Allen Hammock on 8/5/21.
@@ -7,9 +7,9 @@
 
     import SwiftUI
 
-    struct ContentView: View {
-        @ObservedObject var game: EmojiMemoryGame
-        @GestureState var isUpdating = false
+    struct EmojiMemoryGameView: View {
+        @ObservedObject private var game: EmojiMemoryGame
+        @GestureState private var isUpdating = false
         
         var body: some View {
             VStack {
@@ -55,7 +55,7 @@
     }
 
     struct CardView: View {
-        var card: MemoryGame<String>.Card
+        private var card: EmojiMemoryGame.Card
         
         var body: some View {
             ZStack {
@@ -79,7 +79,7 @@
 
         }
         
-        init(_ card: MemoryGame<String>.Card) {
+        init(_ card: EmojiMemoryGame.Card) {
             self.card = card
         }
     }
@@ -90,10 +90,10 @@
         static var previews: some View {
             let game = EmojiMemoryGame()
             Group {
-                ContentView(game)
+                EmojiMemoryGameView(game)
                     .preferredColorScheme(.light)
                     .previewDisplayName("Light Mode")
-                ContentView(game)
+                EmojiMemoryGameView(game)
                     .preferredColorScheme(.dark)
                     .previewDisplayName("Dark Mode")
             }

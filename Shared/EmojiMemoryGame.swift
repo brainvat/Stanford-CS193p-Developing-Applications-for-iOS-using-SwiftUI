@@ -16,6 +16,7 @@ struct cardTheme {
 }
 
 class EmojiMemoryGame: ObservableObject {
+    typealias Card = MemoryGame<String>.Card
     private static let maxSets = 6
     
     @Published private var model: MemoryGame<String>
@@ -23,7 +24,7 @@ class EmojiMemoryGame: ObservableObject {
     
     var theme: String
     
-    static let cardThemes = [
+    private static let cardThemes = [
         "faces":
             cardTheme(label: "Faces", icon: "eye.circle", pairs: 15, color: Color.red, // too many pairs
                       emojis: ["😁", "🥸", "😖", "🤬", "🤯", "😍", "😷", "🥶", "😶‍🌫️", "😬", "🤢"]),
@@ -93,13 +94,13 @@ class EmojiMemoryGame: ObservableObject {
         }
     }
     
-    var cards: Array<MemoryGame<String>.Card> {
+    var cards: Array<Card> {
         model.cards
     }
     
     // MARK: - Intent(s)
     
-    func choose(_ card: MemoryGame<String>.Card) {
+    func choose(_ card: Card) {
         model.choose(card)
         _score = model.score
     }
