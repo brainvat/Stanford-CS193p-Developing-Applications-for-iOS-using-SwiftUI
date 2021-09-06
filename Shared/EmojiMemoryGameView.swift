@@ -4,9 +4,9 @@
     //
     //  Created by Allen Hammock on 8/5/21.
     //
-
+    
     import SwiftUI
-
+    
     struct EmojiMemoryGameView: View {
         @ObservedObject private var game: EmojiMemoryGame
         @GestureState private var isUpdating = false
@@ -21,19 +21,10 @@
                 .font(.title)
                 .padding()
                 
-                ScrollView {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: GridDrawingConstants.gridItemSize))]) {
-                        ForEach(game.cards) { card in
-                            CardView(card)
-                                .foregroundColor(card.color)
-                                .aspectRatio(2/3, contentMode: .fit)
-                                .onTapGesture {
-                                    game.choose(card)
-                                }
-                        }
-                    }
-                    .padding(.horizontal)
+                AspectVGrid(items: game.cards, aspectRatio: 2/3) { card in
+                    cardView(for: card)
                 }
+                
                 HStack {
                     Button(action: { game.reset() }) {
                         HStack {
@@ -53,11 +44,25 @@
             self.game = game
         }
         
+        @ViewBuilder
+        private func cardView(for card: EmojiMemoryGame.Card) -> some View {
+            if (card.isMatched && !card.isFaceUp) {
+                Rectangle().opacity(0.0)
+            } else {
+                CardView(card)
+                    .padding(2)
+                    .foregroundColor(card.color)
+                    .onTapGesture {
+                        game.choose(card)
+                    }
+            }
+        }
+        
         private struct GridDrawingConstants {
             static let gridItemSize: CGFloat = 60
         }
     }
-
+    
     struct CardView: View {
         private var card: EmojiMemoryGame.Card
         
@@ -89,18 +94,18 @@
         }
         
         private struct CardDrawingConstants {
-            static let cornerRadius: CGFloat = 15
+            static let cornerRadius: CGFloat = 10
             static let lineWidth: CGFloat = 3
-            static let fontScale: CGFloat = 0.5
+            static let fontScale: CGFloat = 0.4
         }
         
         private func font(in size: CGSize) -> Font {
             Font.system(size: CardDrawingConstants.fontScale * min(size.width, size.height))
         }
     }
-
-
-
+    
+    
+    
     struct ContentView_Previews: PreviewProvider {
         static var previews: some View {
             let game = EmojiMemoryGame()
